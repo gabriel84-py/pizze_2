@@ -1,0 +1,106 @@
+<%- include('../partials/admin-layout-top', { pageTitle: 'Avis clients', activePage: 'avis', admin }) %>
+
+<div class="page-header">
+  <h1>Avis clients</h1>
+  <button class="btn btn-primary" onclick="openModal('modal-add-avis')">+ Ajouter un avis</button>
+</div>
+
+<div class="avis-list">
+  <% avis.forEach(a => { %>
+  <div class="avis-admin-card <%= a.is_visible ? '' : 'hidden-avis' %>">
+    <div class="avis-meta">
+      <div class="review-avatar"><%= a.author.charAt(0).toUpperCase() %></div>
+      <div>
+        <strong><%= a.author %></strong>
+        <div class="avis-stars">
+          <% for(let i=0;i<a.rating;i++) { %><span style="color:#E5734A">★</span><% } %>
+        </div>
+        <% if (a.date_str) { %><time><%= a.date_str %></time><% } %>
+        <span class="avis-source-badge"><%= a.source %></span>
+      </div>
+    </div>
+    <p class="avis-content">"<%= a.content %>"</p>
+    <div class="avis-actions">
+      <button class="btn btn-sm <%= a.is_visible ? 'btn-outline' : 'btn-primary' %>"
+        onclick="toggleAvis(<%= a.id %>, this)">
+        <%= a.is_visible ? '👁️ Masquer' : '👁️ Afficher' %>
+      </button>
+      <form method="POST" action="/admin/avis/<%= a.id %>/delete" style="display:inline" onsubmit="return confirm('Supprimer cet avis ?')">
+        <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+      </form>
+    </div>
+  </div>
+  <% }) %>
+  <% if (!avis.length) { %>
+  <div class="empty-state-card">
+    <p>Aucun avis. Ajoutez vos premiers verbatims Google.</p>
+  </div>
+  <% } %>
+</div>
+
+<!-- Modal ajout avis -->
+<div class="modal-overlay" id="modal-add-avis" aria-modal="true" role="dialog" aria-label="Ajouter un avis">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Ajouter un avis</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-avis')" aria-label="Fermer">×</button>
+    </div>
+    <form method="POST" action="/admin/avis/add" class="admin-form">
+      <div class="form-row">
+        <div class="form-group flex-2">
+          <label>Nom du client</label>
+          <input type="text" name="author" required placeholder="Marie L.">
+        </div>
+        <div class="form-group">
+          <label>Note (1-5)</label>
+          <select name="rating">
+            <option value="5" selected>★★★★★ (5)</option>
+            <option value="4">★★★★☆ (4)</option>
+            <option value="3">★★★☆☆ (3)</option>
+            <option value="2">★★☆☆☆ (2)</option>
+            <option value="1">★☆☆☆☆ (1)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Contenu de l'avis</label>
+        <textarea name="content" required rows="4" placeholder="Copier-coller l'avis Google ici…"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date (optionnel)</label>
+          <input type="text" name="date_str" placeholder="Ex: Novembre 2024">
+        </div>
+        <div class="form-group">
+          <label>Source</label>
+          <select name="source">
+            <option value="Google" selected>Google</option>
+            <option value="Facebook">Facebook</option>
+            <option value="TripAdvisor">TripAdvisor</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-add-avis')">Annuler</button>
+        <button type="submit" class="btn btn-primary">Ajouter l'avis</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function toggleAvis(id, btn) {
+  fetch('/admin/avis/' + id + '/toggle', { method: 'POST' })
+    .then(r => r.json())
+    .then(data => {
+      if (data.ok) {
+        btn.closest('.avis-admin-card').classList.toggle('hidden-avis', !data.visible);
+        btn.textContent = data.visible ? '👁️ Masquer' : '👁️ Afficher';
+        btn.className = 'btn btn-sm ' + (data.visible ? 'btn-outline' : 'btn-primary');
+      }
+    });
+}
+</script>
+
+<%- include('../partials/admin-layout-bottom') %>

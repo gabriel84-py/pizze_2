@@ -1,0 +1,36 @@
+<%- include('../partials/admin-layout-top', { pageTitle: 'Journal activité', activePage: 'logs', admin }) %>
+
+<div class="page-header">
+  <h1>Journal d'activité</h1>
+  <span class="page-sub"><%= logs.length %> entrées</span>
+</div>
+
+<div class="admin-card">
+  <div class="logs-table-wrap">
+    <table class="logs-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Utilisateur</th>
+          <th>Action</th>
+          <th>Détails</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% logs.forEach(log => { %>
+        <tr>
+          <td><time><%= new Date(log.created_at).toLocaleString('fr-FR') %></time></td>
+          <td><strong><%= log.username || '—' %></strong></td>
+          <td><code class="log-action"><%= log.action %></code></td>
+          <td><%= log.details || '—' %></td>
+        </tr>
+        <% }) %>
+        <% if (!logs.length) { %>
+        <tr><td colspan="4" class="text-center text-muted">Aucune activité enregistrée.</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/admin-layout-bottom') %>

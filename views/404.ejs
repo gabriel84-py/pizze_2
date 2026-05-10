@@ -1,0 +1,16 @@
+<%- include('partials/head', { pageTitle: 'Page introuvable' }) %>
+<%- include('partials/nav') %>
+
+<div class="error-page">
+  <div class="container text-center">
+    <h1>404</h1>
+    <h2>Page introuvable</h2>
+    <p>Cette page s'est envolée comme une pizza mal découpée…</p>
+    <a href="/?lang=<%= lang %>" class="btn btn-gold btn-lg">Retour à l'accueil</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js?v=2"></script>
+</body>
+</html>

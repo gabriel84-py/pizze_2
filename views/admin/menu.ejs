@@ -1,0 +1,271 @@
+<%- include('../partials/admin-layout-top', { pageTitle: 'Menu & Carte', activePage: 'menu', admin }) %>
+
+<div class="page-header">
+  <h1>Menu & Carte</h1>
+  <button class="btn btn-primary" onclick="openModal('modal-add-item')">+ Ajouter une pizza</button>
+</div>
+
+<!-- Tabs catégories -->
+<div class="admin-tabs">
+  <% cats.forEach((cat, i) => { %>
+  <button class="admin-tab <%= i===0?'active':'' %>" data-target="cat-panel-<%= cat.id %>">
+    <%= cat.name %> (<%= items.filter(it => it.category_id === cat.id).length %>)
+  </button>
+  <% }) %>
+  <button class="admin-tab" data-target="cat-panel-new" id="btn-new-cat">+ Catégorie</button>
+</div>
+
+<!-- Panels par catégorie -->
+<% cats.forEach((cat, i) => { %>
+<div class="admin-tab-panel <%= i===0?'active':'' %>" id="cat-panel-<%= cat.id %>">
+  <div class="panel-header">
+    <h2><%= cat.name %></h2>
+    <div class="panel-actions">
+      <button class="btn btn-sm btn-outline" onclick="openEditCat(<%= cat.id %>, '<%= cat.name.replace(/'/g,`\\'`) %>', <%= cat.sort_order %>, <%= cat.is_active %>)">Modifier catégorie</button>
+    </div>
+  </div>
+
+  <% const catItems = items.filter(it => it.category_id === cat.id); %>
+  <% if (catItems.length === 0) { %>
+  <div class="empty-state-card">
+    <p>Aucun article dans cette catégorie.</p>
+    <button class="btn btn-primary" onclick="openAddWithCat(<%= cat.id %>)">+ Ajouter un article</button>
+  </div>
+  <% } else { %>
+  <div class="menu-admin-grid">
+    <% catItems.forEach(item => { %>
+    <div class="menu-admin-card <%= item.is_available ? '' : 'unavailable' %>">
+      <div class="mac-photo">
+        <% if (item.photo) { %>
+        <img src="/uploads/<%= item.photo %>" alt="<%= item.name %>" loading="lazy">
+        <% } else { %>
+        <div class="mac-no-photo">📷</div>
+        <% } %>
+        <% if (item.is_featured) { %><span class="mac-featured-badge">★ Signature</span><% } %>
+      </div>
+      <div class="mac-body">
+        <div class="mac-header">
+          <strong><%= item.name %></strong>
+          <span class="mac-price"><%= item.price.toFixed(2).replace('.',',') %> €</span>
+        </div>
+        <p class="mac-desc"><%= (item.description||'').substring(0,80) %><%= item.description?.length > 80 ? '…' : '' %></p>
+        <div class="mac-badges">
+          <% if (item.badge_veggie) { %><span class="badge badge-veggie sm">🌱</span><% } %>
+          <% if (item.badge_piquant) { %><span class="badge badge-piquant sm">🌶️</span><% } %>
+          <% if (item.badge_truffe) { %><span class="badge badge-truffe sm">🍄</span><% } %>
+          <% if (!item.is_available) { %><span class="badge badge-unavailable sm">Indisponible</span><% } %>
+        </div>
+        <div class="mac-actions">
+          <button class="btn btn-sm btn-outline" onclick='openEditItem(<%- JSON.stringify(item) %>)'>Modifier</button>
+          <form method="POST" action="/admin/menu/item/<%= item.id %>/delete" onsubmit="return confirm('Supprimer « <%= item.name.replace(/'/g,`\\'`) %> » définitivement ?')">
+            <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <% } %>
+</div>
+<% }) %>
+
+<!-- Nouvelle catégorie -->
+<div class="admin-tab-panel" id="cat-panel-new">
+  <div class="admin-card">
+    <h2>Nouvelle catégorie</h2>
+    <form method="POST" action="/admin/menu/category/add" class="admin-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom de la catégorie</label>
+          <input type="text" name="name" required placeholder="Ex: Desserts">
+        </div>
+        <div class="form-group">
+          <label>Slug (URL)</label>
+          <input type="text" name="slug" required placeholder="Ex: desserts">
+        </div>
+        <div class="form-group form-group-sm">
+          <label>Ordre</label>
+          <input type="number" name="sort_order" value="<%= cats.length + 1 %>" min="0">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Créer la catégorie</button>
+    </form>
+  </div>
+</div>
+
+<!-- ── MODAL : Ajouter item ──────────────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-add-item" aria-modal="true" role="dialog" aria-label="Ajouter une pizza">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Ajouter un article</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-item')" aria-label="Fermer">×</button>
+    </div>
+    <form method="POST" action="/admin/menu/item/add" enctype="multipart/form-data" class="admin-form">
+      <div class="form-group">
+        <label>Catégorie</label>
+        <select name="category_id" id="add-cat-select" required>
+          <% cats.forEach(c => { %><option value="<%= c.id %>"><%= c.name %></option><% }) %>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group flex-2">
+          <label>Nom</label>
+          <input type="text" name="name" required placeholder="Ex: Margherita">
+        </div>
+        <div class="form-group">
+          <label>Prix (€)</label>
+          <input type="number" name="price" step="0.5" min="0" required placeholder="14.00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description / Ingrédients</label>
+        <textarea name="description" rows="3" placeholder="Tomate, mozzarella, basilic…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Photo</label>
+        <div class="file-upload-zone" id="add-upload-zone">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <p>Cliquez ou glissez une photo ici</p>
+          <span class="file-hint">JPG, PNG, WebP — max 15 Mo — redimensionné automatiquement</span>
+          <input type="file" name="photo" accept="image/*" class="file-input">
+        </div>
+        <div class="file-preview" id="add-file-preview"></div>
+      </div>
+      <div class="form-row form-row-check">
+        <label class="checkbox-label"><input type="checkbox" name="badge_veggie"> 🌱 Végétarien</label>
+        <label class="checkbox-label"><input type="checkbox" name="badge_piquant"> 🌶️ Piquant</label>
+        <label class="checkbox-label"><input type="checkbox" name="badge_truffe"> 🍄 Truffe</label>
+        <label class="checkbox-label"><input type="checkbox" name="is_featured"> ★ Pizza signature</label>
+      </div>
+      <div class="form-group">
+        <label>Ordre d'affichage</label>
+        <input type="number" name="sort_order" value="99" min="0">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-add-item')">Annuler</button>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── MODAL : Modifier item ─────────────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-edit-item" aria-modal="true" role="dialog" aria-label="Modifier une pizza">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Modifier l'article</h3>
+      <button class="modal-close" onclick="closeModal('modal-edit-item')" aria-label="Fermer">×</button>
+    </div>
+    <form method="POST" id="edit-item-form" enctype="multipart/form-data" class="admin-form">
+      <div class="form-group">
+        <label>Catégorie</label>
+        <select name="category_id" id="edit-cat-select" required>
+          <% cats.forEach(c => { %><option value="<%= c.id %>"><%= c.name %></option><% }) %>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group flex-2">
+          <label>Nom</label>
+          <input type="text" name="name" id="edit-name" required>
+        </div>
+        <div class="form-group">
+          <label>Prix (€)</label>
+          <input type="number" name="price" id="edit-price" step="0.5" min="0" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description / Ingrédients</label>
+        <textarea name="description" id="edit-desc" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Nouvelle photo (optionnel)</label>
+        <div class="file-upload-zone">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <p>Remplacer la photo</p>
+          <input type="file" name="photo" accept="image/*" class="file-input">
+        </div>
+        <div id="edit-current-photo"></div>
+      </div>
+      <div class="form-row form-row-check">
+        <label class="checkbox-label"><input type="checkbox" name="badge_veggie" id="edit-veggie"> 🌱 Végétarien</label>
+        <label class="checkbox-label"><input type="checkbox" name="badge_piquant" id="edit-piquant"> 🌶️ Piquant</label>
+        <label class="checkbox-label"><input type="checkbox" name="badge_truffe" id="edit-truffe"> 🍄 Truffe</label>
+        <label class="checkbox-label"><input type="checkbox" name="is_featured" id="edit-featured"> ★ Pizza signature</label>
+        <label class="checkbox-label"><input type="checkbox" name="is_available" id="edit-available"> ✅ Disponible</label>
+      </div>
+      <div class="form-group">
+        <label>Ordre d'affichage</label>
+        <input type="number" name="sort_order" id="edit-order" min="0">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-edit-item')">Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── MODAL : Modifier catégorie ───────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-edit-cat" aria-modal="true" role="dialog" aria-label="Modifier une catégorie">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3>Modifier la catégorie</h3>
+      <button class="modal-close" onclick="closeModal('modal-edit-cat')" aria-label="Fermer">×</button>
+    </div>
+    <form method="POST" id="edit-cat-form" class="admin-form">
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" name="name" id="editcat-name" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Ordre</label>
+          <input type="number" name="sort_order" id="editcat-order" min="0">
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label" style="margin-top:1.6rem"><input type="checkbox" name="is_active" id="editcat-active"> Active</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-edit-cat')">Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function openAddWithCat(catId) {
+  document.getElementById('add-cat-select').value = catId;
+  openModal('modal-add-item');
+}
+function openEditItem(item) {
+  const form = document.getElementById('edit-item-form');
+  form.action = '/admin/menu/item/' + item.id + '/edit';
+  document.getElementById('edit-name').value    = item.name;
+  document.getElementById('edit-price').value   = item.price;
+  document.getElementById('edit-desc').value    = item.description || '';
+  document.getElementById('edit-order').value   = item.sort_order;
+  document.getElementById('edit-cat-select').value = item.category_id;
+  document.getElementById('edit-veggie').checked   = !!item.badge_veggie;
+  document.getElementById('edit-piquant').checked  = !!item.badge_piquant;
+  document.getElementById('edit-truffe').checked   = !!item.badge_truffe;
+  document.getElementById('edit-featured').checked = !!item.is_featured;
+  document.getElementById('edit-available').checked= !!item.is_available;
+  const ph = document.getElementById('edit-current-photo');
+  ph.innerHTML = item.photo
+    ? `<img src="/uploads/${item.photo}" style="height:80px;border-radius:8px;margin-top:.5rem" alt="Photo actuelle">`
+    : '<p class="text-sm text-muted">Aucune photo actuelle</p>';
+  openModal('modal-edit-item');
+}
+function openEditCat(id, name, order, active) {
+  const form = document.getElementById('edit-cat-form');
+  form.action = '/admin/menu/category/' + id + '/edit';
+  document.getElementById('editcat-name').value  = name;
+  document.getElementById('editcat-order').value = order;
+  document.getElementById('editcat-active').checked = !!active;
+  openModal('modal-edit-cat');
+}
+</script>
+
+<%- include('../partials/admin-layout-bottom') %>

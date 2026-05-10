@@ -1,0 +1,69 @@
+<%- include('../partials/admin-layout-top', { pageTitle: 'Horaires', activePage: 'horaires', admin }) %>
+
+<div class="page-header">
+  <h1>Horaires d'ouverture</h1>
+</div>
+
+<% if (saved) { %>
+<div class="alert alert-success">✅ Horaires enregistrés avec succès !</div>
+<% } %>
+
+<div class="admin-card">
+  <form method="POST" action="/admin/horaires" class="admin-form">
+    <div class="horaires-grid">
+      <% horaires.forEach(h => { %>
+      <div class="horaire-row">
+        <div class="horaire-day"><strong><%= h.day_name_fr %></strong></div>
+        <div class="horaire-closed-toggle">
+          <label class="toggle-switch">
+            <input type="checkbox" name="closed_<%= h.day_of_week %>" id="closed_<%= h.day_of_week %>"
+              <%= h.is_closed ? 'checked' : '' %>
+              onchange="toggleDay(<%= h.day_of_week %>)">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label">Fermé</span>
+        </div>
+        <div class="horaire-times" id="times_<%= h.day_of_week %>" style="<%= h.is_closed ? 'opacity:.3;pointer-events:none' : '' %>">
+          <div class="form-group form-group-inline">
+            <label>Ouverture</label>
+            <input type="time" name="opens_<%= h.day_of_week %>" value="<%= h.opens || '18:00' %>">
+          </div>
+          <span class="time-sep">—</span>
+          <div class="form-group form-group-inline">
+            <label>Fermeture</label>
+            <input type="time" name="closes_<%= h.day_of_week %>" value="<%= h.closes || '21:00' %>">
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-lg">Enregistrer les horaires</button>
+    </div>
+  </form>
+</div>
+
+<div class="admin-card mt-3">
+  <h3>Aperçu — badge ouverture du site</h3>
+  <p class="text-muted">Le badge est calculé en temps réel à partir de ces horaires. Aperçu d'exemple :</p>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem">
+    <div class="open-badge is-open" style="position:static;transform:none">
+      <span class="badge-dot"></span> Ouvert maintenant
+    </div>
+    <div class="open-badge is-closed" style="position:static;transform:none">
+      <span class="badge-dot"></span> Fermé — ouvre à 18h00
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleDay(dow) {
+  const cb = document.getElementById('closed_' + dow);
+  const times = document.getElementById('times_' + dow);
+  times.style.opacity = cb.checked ? '.3' : '1';
+  times.style.pointerEvents = cb.checked ? 'none' : '';
+}
+</script>
+
+<%- include('../partials/admin-layout-bottom') %>

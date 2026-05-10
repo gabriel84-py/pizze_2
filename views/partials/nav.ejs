@@ -1,0 +1,88 @@
+<%
+const phone     = s.phone     || '+33768280628';
+const phoneDsp  = s.phone_display || '07 68 28 06 28';
+const annActive = s.announcement_active === '1' && s.announcement;
+%>
+
+<% if (annActive) { %>
+<div class="announcement-bar">
+  <span><%= s.announcement %></span>
+</div>
+<% } %>
+
+<header class="site-header" id="site-header">
+  <div class="header-inner container">
+
+    <!-- Logo -->
+    <a href="/?lang=<%= lang %>" class="logo" aria-label="Parigina — Accueil">
+      <div class="logo-oven">
+        <%# SVG tracé d'après le vrai logo Parigina : four napolitain + flamme double %>
+        <svg viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="color:var(--cream)">
+          <!-- Cheminée : barre du haut + encoche gauche caractéristique -->
+          <line x1="19" y1="4" x2="37" y2="4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <line x1="19" y1="4" x2="19" y2="9"  stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <line x1="19" y1="9" x2="27" y2="9"  stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <line x1="27" y1="9" x2="27" y2="23" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <line x1="37" y1="4" x2="37" y2="23" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <!-- Dôme arc gauche -->
+          <path d="M27 23 C24 23 14 26 8 37 C4 45 5 56 10 64" stroke="currentColor" stroke-width="1.9" fill="none" stroke-linecap="round"/>
+          <!-- Pied gauche -->
+          <line x1="2"  y1="64" x2="12" y2="64" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <!-- Dôme arc droit -->
+          <path d="M37 23 C40 23 46 26 52 37 C56 45 55 56 50 64" stroke="currentColor" stroke-width="1.9" fill="none" stroke-linecap="round"/>
+          <!-- Pied droit -->
+          <line x1="48" y1="64" x2="58" y2="64" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <!-- Flamme double (contour) -->
+          <path d="M32 62 C26 55 23 47 27 38 C28 43 31 46 33 44 C30 39 31 31 32 26 C36 33 37 42 33 46 C35 48 38 45 39 40 C43 49 39 57 32 62Z" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Petite flamme intérieure (larme) -->
+          <path d="M32 57 C30.5 53 31 49 32 47 C33 49 33.5 53 32 57Z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="logo-wordmark">
+        <span class="logo-name">Parigina</span>
+        <span class="logo-sub">Pizzeria napolitaine</span>
+      </div>
+    </a>
+
+    <!-- Nav desktop -->
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="/?lang=<%= lang %>"              class="nav-link <%= page==='home'    ?'active':'' %>"><%= t('nav.home')    %></a>
+      <a href="/carte?lang=<%= lang %>"          class="nav-link <%= page==='carte'   ?'active':'' %>"><%= t('nav.menu')    %></a>
+      <a href="/notre-histoire?lang=<%= lang %>" class="nav-link <%= page==='histoire'?'active':'' %>"><%= t('nav.story')   %></a>
+      <a href="/avis?lang=<%= lang %>"           class="nav-link <%= page==='avis'    ?'active':'' %>"><%= t('nav.reviews') %></a>
+    </nav>
+
+    <!-- Droite : langue + tel + burger -->
+    <div class="header-right">
+      <div class="lang-switcher" aria-label="Changer de langue">
+        <% langs.forEach(l => { %>
+          <a href="?lang=<%= l %>" class="lang-btn <%= lang===l?'active':'' %>"><%= l.toUpperCase() %></a>
+        <% }) %>
+      </div>
+
+      <a href="tel:<%= phone %>" class="header-tel" aria-label="Appeler Parigina">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+        <%= phoneDsp %>
+      </a>
+
+      <button class="burger" id="burger-btn" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu">
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menu mobile -->
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
+    <a href="/?lang=<%= lang %>"              ><%= t('nav.home')    %></a>
+    <a href="/carte?lang=<%= lang %>"          ><%= t('nav.menu')    %></a>
+    <a href="/notre-histoire?lang=<%= lang %>" ><%= t('nav.story')   %></a>
+    <a href="/avis?lang=<%= lang %>"           ><%= t('nav.reviews') %></a>
+    <div class="mobile-nav-langs">
+      <% langs.forEach(l => { %>
+        <a href="?lang=<%= l %>" class="<%= lang===l?'active':'' %>"><%= t('lang.'+l) %></a>
+      <% }) %>
+    </div>
+  </nav>
+</header>

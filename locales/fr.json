@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "menu": "La Carte",
+    "story": "Notre Histoire",
+    "reviews": "Avis",
+    "contact": "Contact",
+    "legal": "Mentions légales",
+    "cookies": "Politique cookies"
+  },
+  "hero": {
+    "cta_call": "Appeler maintenant",
+    "cta_menu": "Voir la carte",
+    "open_now": "Ouvert maintenant",
+    "closed_opens": "Fermé — ouvre à {{time}}",
+    "closed_today": "Fermé aujourd'hui"
+  },
+  "about": {
+    "title": "Notre Histoire"
+  },
+  "menu": {
+    "title": "La Carte",
+    "subtitle": "Pizzas traditionnelles napolitaines au feu de bois",
+    "featured": "À la une",
+    "veggie": "Végétarien",
+    "spicy": "Piquant",
+    "truffle": "Truffe",
+    "supplements_note": "Tous les suppléments peuvent être ajoutés à n'importe quelle pizza."
+  },
+  "reviews": {
+    "title": "Ce qu'ils disent",
+    "subtitle": "Note Google",
+    "source": "Avis Google"
+  },
+  "hours": {
+    "title": "Horaires",
+    "closed": "Fermé",
+    "today": "Aujourd'hui"
+  },
+  "contact": {
+    "title": "Nous trouver",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "take_away": "À emporter",
+    "on_site": "Sur place",
+    "parking": "Parking facile"
+  },
+  "footer": {
+    "follow": "Suivez-nous",
+    "rights": "Tous droits réservés",
+    "legal": "Mentions légales"
+  },
+  "lang": {
+    "fr": "Français",
+    "en": "English",
+    "it": "Italiano"
+  },
+  "float_btn": "Appeler",
+  "open_badge": "Ouvert"
+}

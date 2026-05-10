@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "story": "Our Story",
+    "reviews": "Reviews",
+    "contact": "Contact",
+    "legal": "Legal notice",
+    "cookies": "Cookie policy"
+  },
+  "hero": {
+    "cta_call": "Call now",
+    "cta_menu": "View menu",
+    "open_now": "Open now",
+    "closed_opens": "Closed — opens at {{time}}",
+    "closed_today": "Closed today"
+  },
+  "about": {
+    "title": "Our Story"
+  },
+  "menu": {
+    "title": "Our Menu",
+    "subtitle": "Traditional Neapolitan wood-fired pizzas",
+    "featured": "Featured",
+    "veggie": "Vegetarian",
+    "spicy": "Spicy",
+    "truffle": "Truffle",
+    "supplements_note": "All extras can be added to any pizza."
+  },
+  "reviews": {
+    "title": "What they say",
+    "subtitle": "Google rating",
+    "source": "Google review"
+  },
+  "hours": {
+    "title": "Opening hours",
+    "closed": "Closed",
+    "today": "Today"
+  },
+  "contact": {
+    "title": "Find us",
+    "phone": "Phone",
+    "address": "Address",
+    "take_away": "Take away",
+    "on_site": "Dine in",
+    "parking": "Easy parking"
+  },
+  "footer": {
+    "follow": "Follow us",
+    "rights": "All rights reserved",
+    "legal": "Legal notice"
+  },
+  "lang": {
+    "fr": "Français",
+    "en": "English",
+    "it": "Italiano"
+  },
+  "float_btn": "Call",
+  "open_badge": "Open"
+}

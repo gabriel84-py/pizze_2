@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion — Parigina Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/admin.css?v=1">
+</head>
+<body class="admin-login-page">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-brand">
+        <svg viewBox="0 0 40 50" fill="none" width="36" aria-hidden="true">
+          <path d="M20 48C10 42 4 34 6 24c1-5 4-9 8-12-1 5 2 9 5 11 0-6 3-12 8-16 0 7 4 12 7 16 2-3 2-7 1-10 4 4 6 10 5 16-1 8-7 14-20 19z" fill="url(#fl-login)"/>
+          <defs><linearGradient id="fl-login" x1="20" y1="4" x2="20" y2="48" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E5734A"/><stop offset="100%" stop-color="#C8102E"/></linearGradient></defs>
+        </svg>
+        <span>Parigina</span>
+      </div>
+      <h1>Espace administration</h1>
+      <p class="login-sub">Connectez-vous pour gérer votre site</p>
+
+      <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="/admin/login" class="login-form">
+        <input type="hidden" name="next" value="<%= next %>">
+        <div class="form-group">
+          <label for="username">Identifiant</label>
+          <input type="text" id="username" name="username" autocomplete="username" required placeholder="admin" autofocus>
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn-login">Se connecter</button>
+      </form>
+
+      <a href="/" class="login-back">← Retour au site</a>
+    </div>
+  </div>
+</body>
+</html>

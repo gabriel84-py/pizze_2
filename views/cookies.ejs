@@ -1,0 +1,24 @@
+<%- include('partials/head', { pageTitle: 'Politique cookies' }) %>
+<%- include('partials/nav') %>
+<main>
+  <section class="section legal-section">
+    <div class="container container-tight">
+      <h1>Politique de cookies</h1>
+      <p>Ce site utilise uniquement des cookies techniques essentiels au fonctionnement du service (session de langue, session administrateur). Aucun cookie publicitaire ou traceur tiers n'est déposé sans votre consentement.</p>
+      <h2>Cookies utilisés</h2>
+      <table class="cookies-table">
+        <thead><tr><th>Nom</th><th>Rôle</th><th>Durée</th></tr></thead>
+        <tbody>
+          <tr><td><code>lang</code></td><td>Mémorise votre préférence de langue</td><td>1 an</td></tr>
+          <tr><td><code>connect.sid</code></td><td>Session sécurisée (admin uniquement)</td><td>7 jours</td></tr>
+        </tbody>
+      </table>
+      <h2>Google Maps</h2>
+      <p>La carte intégrée sur notre site utilise le service Google Maps, qui peut déposer ses propres cookies. Consultez la <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">politique de confidentialité de Google</a> pour plus d'informations.</p>
+      <p class="legal-back"><a href="/?lang=<%= lang %>">← Retour à l'accueil</a></p>
+    </div>
+  </section>
+</main>
+<%- include('partials/footer') %>
+<script src="/js/main.js"></script>
+</body></html>

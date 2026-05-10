@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof pageTitle !== 'undefined' && pageTitle ? pageTitle + ' — ' : '' %><%= s.site_name || 'Parigina' %></title>
+  <meta name="description" content="<%= s.meta_description || '' %>">
+  <meta name="keywords"    content="<%= s.meta_keywords || '' %>">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="restaurant">
+  <meta property="og:title"       content="<%= s.site_name || 'Parigina' %>">
+  <meta property="og:description" content="<%= s.meta_description || '' %>">
+  <meta property="og:image"       content="/uploads/<%= s.hero_photo || 'devanture-nuit.jpg' %>">
+  <meta property="og:locale"      content="<%= lang === 'fr' ? 'fr_FR' : lang === 'en' ? 'en_GB' : 'it_IT' %>">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org","@type":"Restaurant",
+    "name":"<%= s.site_name %>",
+    "description":"<%= s.meta_description %>",
+    "address":{"@type":"PostalAddress","streetAddress":"<%= s.address_street %>","addressLocality":"<%= s.address_city %>","postalCode":"<%= s.address_zip %>","addressCountry":"FR"},
+    "telephone":"<%= s.phone %>",
+    "servesCuisine":["Pizza","Italian","Neapolitan"],
+    "priceRange":"€€",
+    "aggregateRating":{"@type":"AggregateRating","ratingValue":"<%= s.google_rating %>","reviewCount":"<%= s.google_count %>"},
+    "sameAs":["<%= s.facebook_url %>"]
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/main.css?v=2">
+</head>
+<body class="lang-<%= lang %>">

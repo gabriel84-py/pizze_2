@@ -1,0 +1,98 @@
+<%- include('partials/head', { pageTitle: t('nav.menu') }) %>
+<%- include('partials/nav') %>
+
+<main>
+
+  <!-- Page hero -->
+  <section class="page-hero">
+    <div class="container" style="position:relative;z-index:2">
+      <span class="section-label on-dark"><%= t('menu.subtitle') || 'Pizzas napolitaines' %></span>
+      <h1><%= t('menu.title') || 'Notre carte' %></h1>
+      <div class="open-status on-dark <%= status.open ? 'is-open' : 'is-closed' %>" style="margin-top:1.25rem;width:fit-content">
+        <span class="status-dot"></span>
+        <% if (status.open) { %><%= t('hero.open_now') %>
+        <% } else if (status.opensAt) { %><%= t('hero.closed_opens', { time: status.opensAt }) %>
+        <% } else { %><%= t('hero.closed_today') %><% } %>
+      </div>
+    </div>
+    <div class="page-hero-deco" aria-hidden="true">Carte</div>
+  </section>
+
+  <!-- Menu -->
+  <section class="menu-section">
+    <div class="container">
+
+      <!-- Onglets catégories -->
+      <div class="menu-tabs-bar" role="tablist" aria-label="Catégories du menu">
+        <% menu.forEach((cat, i) => { %>
+        <button
+          class="menu-tab-btn <%= i===0?'active':'' %>"
+          role="tab"
+          data-panel="cat-<%= cat.id %>"
+          aria-selected="<%= i===0 %>"
+        ><%= cat.name %></button>
+        <% }) %>
+      </div>
+
+      <!-- Panneaux -->
+      <% menu.forEach((cat, i) => { %>
+      <div class="menu-panel <%= i===0?'active':'' %>" id="cat-<%= cat.id %>" role="tabpanel">
+
+        <% if (cat.items.length === 0) { %>
+        <p style="color:var(--warm);font-style:italic;padding:2rem 0">Carte en cours de mise à jour…</p>
+        <% } %>
+
+        <ul class="menu-list">
+          <% cat.items.forEach((item) => { %>
+          <li class="<%= item.photo ? 'menu-list-item menu-list-item-photo' : 'menu-list-item' %>">
+
+            <div class="menu-item-left">
+              <h3 class="menu-item-title"><%= item.name %></h3>
+              <% if (item.description) { %>
+              <p class="menu-item-desc"><%= item.description %></p>
+              <% } %>
+              <div class="menu-item-badges">
+                <% if (item.badge_veggie) { %><span class="badge badge-veggie"><%= t('menu.veggie') %></span><% } %>
+                <% if (item.badge_piquant) { %><span class="badge badge-piquant"><%= t('menu.spicy') %></span><% } %>
+                <% if (item.badge_truffe) { %><span class="badge badge-truffe"><%= t('menu.truffle') %></span><% } %>
+              </div>
+            </div>
+
+            <div class="menu-item-right">
+              <span class="menu-item-price"><%= item.price.toFixed(2).replace('.', ',') %> €</span>
+              <% if (item.is_featured) { %><span class="menu-item-featured-dot" title="Pizza signature"></span><% } %>
+            </div>
+
+            <% if (item.photo) { %>
+            <img class="menu-photo-thumb" src="/uploads/<%= item.photo %>" alt="<%= item.name %>" loading="lazy" width="100" height="80">
+            <% } %>
+
+          </li>
+          <% }) %>
+        </ul>
+
+        <% if (cat.slug === 'supplements') { %>
+        <p style="margin-top:1.5rem;font-size:.82rem;color:var(--warm);font-style:italic"><%= t('menu.supplements_note') || 'Les suppléments sont ajoutés à votre pizza.' %></p>
+        <% } %>
+
+      </div>
+      <% }) %>
+
+      <!-- CTA -->
+      <div class="menu-cta">
+        <p>Pour commander par téléphone ou réserver une table</p>
+        <a href="tel:<%= s.phone %>" class="btn btn-gold btn-lg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          <%= s.phone_display %>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js?v=2"></script>
+</body>
+</html>

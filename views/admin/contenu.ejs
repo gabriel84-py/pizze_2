@@ -1,0 +1,210 @@
+<%- include('../partials/admin-layout-top', { pageTitle: 'Contenu général', activePage: 'contenu', admin }) %>
+
+<div class="page-header">
+  <h1>Contenu général</h1>
+</div>
+
+<% if (saved)    { %><div class="alert alert-success">✅ Modifications enregistrées !</div><% } %>
+<% if (pwdsaved) { %><div class="alert alert-success">✅ Mot de passe modifié !</div><% } %>
+<% if (pwderror === '1') { %><div class="alert alert-error">❌ Mot de passe actuel incorrect.</div><% } %>
+<% if (pwderror === '2') { %><div class="alert alert-error">❌ Les mots de passe ne correspondent pas ou sont trop courts (8 caractères min).</div><% } %>
+
+<form method="POST" action="/admin/contenu" enctype="multipart/form-data" class="admin-form">
+
+  <!-- Infos contact -->
+  <div class="admin-card">
+    <h2>📞 Informations de contact</h2>
+    <div class="form-row">
+      <div class="form-group flex-2">
+        <label>Nom du restaurant</label>
+        <input type="text" name="site_name" value="<%= s.site_name %>" required>
+      </div>
+      <div class="form-group">
+        <label>Téléphone brut (ex: +33768280628)</label>
+        <input type="text" name="phone" value="<%= s.phone %>">
+      </div>
+      <div class="form-group">
+        <label>Téléphone affiché (ex: 07 68 28 06 28)</label>
+        <input type="text" name="phone_display" value="<%= s.phone_display %>">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" value="<%= s.email %>">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group flex-2">
+        <label>Adresse (rue)</label>
+        <input type="text" name="address_street" value="<%= s.address_street %>">
+      </div>
+      <div class="form-group">
+        <label>Code postal</label>
+        <input type="text" name="address_zip" value="<%= s.address_zip %>">
+      </div>
+      <div class="form-group">
+        <label>Ville</label>
+        <input type="text" name="address_city" value="<%= s.address_city %>">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Lien Google Maps</label>
+      <input type="url" name="google_maps_url" value="<%= s.google_maps_url %>">
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="admin-card">
+    <h2>🌟 Section Hero (page d'accueil)</h2>
+    <div class="form-group">
+      <label>Titre principal (utilisez une ligne par <code>\n</code>)</label>
+      <textarea name="hero_title" rows="2"><%= s.hero_title %></textarea>
+    </div>
+    <div class="form-group">
+      <label>Tagline / Accroche</label>
+      <input type="text" name="hero_tagline" value="<%= s.hero_tagline %>">
+    </div>
+    <div class="form-group">
+      <label>Photo héro (remplace la photo actuelle)</label>
+      <% if (s.hero_photo) { %>
+      <div class="current-photo-preview">
+        <img src="/uploads/<%= s.hero_photo %>" alt="Hero actuel" style="height:120px;border-radius:8px">
+        <span>Photo actuelle</span>
+      </div>
+      <% } %>
+      <div class="file-upload-zone">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <p>Cliquez ou glissez une photo (format paysage recommandé)</p>
+        <input type="file" name="hero_photo" accept="image/*" class="file-input">
+      </div>
+    </div>
+  </div>
+
+  <!-- À propos -->
+  <div class="admin-card">
+    <h2>📖 Section "Notre Histoire"</h2>
+    <div class="form-group">
+      <label>Titre</label>
+      <input type="text" name="about_title" value="<%= s.about_title %>">
+    </div>
+    <div class="form-group">
+      <label>Texte (un paragraphe par ligne vide)</label>
+      <textarea name="about_text" rows="8"><%= s.about_text %></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Photo 1</label>
+        <% if (s.about_photo_1) { %>
+        <div class="current-photo-preview">
+          <img src="/uploads/<%= s.about_photo_1 %>" alt="" style="height:80px;border-radius:8px">
+        </div>
+        <% } %>
+        <div class="file-upload-zone">
+          <p>Photo principale histoire</p>
+          <input type="file" name="about_photo_1" accept="image/*" class="file-input">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Photo 2 (optionnel)</label>
+        <% if (s.about_photo_2) { %>
+        <div class="current-photo-preview">
+          <img src="/uploads/<%= s.about_photo_2 %>" alt="" style="height:80px;border-radius:8px">
+        </div>
+        <% } %>
+        <div class="file-upload-zone">
+          <p>2ème photo histoire</p>
+          <input type="file" name="about_photo_2" accept="image/*" class="file-input">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Réseaux sociaux -->
+  <div class="admin-card">
+    <h2>🔗 Réseaux sociaux & commande</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Facebook URL</label>
+        <input type="url" name="facebook_url" value="<%= s.facebook_url %>" placeholder="https://facebook.com/...">
+      </div>
+      <div class="form-group">
+        <label>Instagram URL</label>
+        <input type="url" name="instagram_url" value="<%= s.instagram_url %>" placeholder="https://instagram.com/...">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group flex-2">
+        <label>Lien Uber Eats (optionnel)</label>
+        <input type="url" name="uber_eats_url" value="<%= s.uber_eats_url %>" placeholder="https://ubereats.com/...">
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label" style="margin-top:1.6rem">
+          <input type="checkbox" name="uber_eats_active" <%= s.uber_eats_active === '1' ? 'checked' : '' %>>
+          Activer le bouton Uber Eats
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bandeau annonce -->
+  <div class="admin-card">
+    <h2>📢 Bandeau d'annonce</h2>
+    <p class="text-muted">Affiché en haut du site (idéal pour : fermeture exceptionnelle, événement, promotion…)</p>
+    <div class="form-row">
+      <div class="form-group flex-2">
+        <label>Message</label>
+        <input type="text" name="announcement" value="<%= s.announcement %>" placeholder="Ex: Fermé exceptionnellement le 14 juillet 🎆">
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label" style="margin-top:1.6rem">
+          <input type="checkbox" name="announcement_active" <%= s.announcement_active === '1' ? 'checked' : '' %>>
+          Afficher le bandeau
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO -->
+  <div class="admin-card">
+    <h2>🔍 SEO & métadonnées</h2>
+    <div class="form-group">
+      <label>Meta description</label>
+      <textarea name="meta_description" rows="2"><%= s.meta_description %></textarea>
+      <span class="form-hint"><%= (s.meta_description||'').length %>/160 caractères</span>
+    </div>
+    <div class="form-group">
+      <label>Mots-clés (séparés par des virgules)</label>
+      <input type="text" name="meta_keywords" value="<%= s.meta_keywords %>">
+    </div>
+  </div>
+
+  <div class="form-actions sticky-footer-actions">
+    <a href="/admin" class="btn btn-outline">Annuler</a>
+    <button type="submit" class="btn btn-primary btn-lg">💾 Enregistrer toutes les modifications</button>
+  </div>
+</form>
+
+<!-- Changer mot de passe -->
+<div class="admin-card mt-4">
+  <h2>🔐 Changer le mot de passe admin</h2>
+  <form method="POST" action="/admin/password" class="admin-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Mot de passe actuel</label>
+        <input type="password" name="current" required placeholder="••••••••">
+      </div>
+      <div class="form-group">
+        <label>Nouveau mot de passe (8 car. min)</label>
+        <input type="password" name="newpw" required minlength="8" placeholder="••••••••">
+      </div>
+      <div class="form-group">
+        <label>Confirmer</label>
+        <input type="password" name="confirm" required minlength="8" placeholder="••••••••">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-outline">Changer le mot de passe</button>
+  </form>
+</div>
+
+<%- include('../partials/admin-layout-bottom') %>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle + ' — ' : '' %>Admin Parigina</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/admin.css?v=1">
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body class="admin-body">
+
+<div class="admin-layout">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-brand">
+      <svg viewBox="0 0 40 50" fill="none" width="28" aria-hidden="true">
+        <path d="M20 48C10 42 4 34 6 24c1-5 4-9 8-12-1 5 2 9 5 11 0-6 3-12 8-16 0 7 4 12 7 16 2-3 2-7 1-10 4 4 6 10 5 16-1 8-7 14-20 19z" fill="url(#fl-sb)"/>
+        <defs><linearGradient id="fl-sb" x1="20" y1="4" x2="20" y2="48" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E5734A"/><stop offset="100%" stop-color="#C8102E"/></linearGradient></defs>
+      </svg>
+      <div>
+        <span class="sidebar-name">Parigina</span>
+        <span class="sidebar-role">Administration</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Navigation admin">
+      <a href="/admin"          class="sidebar-link <%= activePage==='dashboard' ? 'active':'' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Tableau de bord
+      </a>
+      <a href="/admin/menu"     class="sidebar-link <%= activePage==='menu' ? 'active':'' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v8M8 12h8"/></svg>
+        Menu & Carte
+      </a>
+      <a href="/admin/horaires" class="sidebar-link <%= activePage==='horaires' ? 'active':'' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Horaires
+      </a>
+      <a href="/admin/galerie"  class="sidebar-link <%= activePage==='galerie' ? 'active':'' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Galerie photos
+      </a>
+      <a href="/admin/avis"     class="sidebar-link <%= activePage==='avis' ? 'active':'' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Avis clients
+      </a>
+      <a href="/admin/contenu"  class="sidebar-link <%= activePage==='contenu' ? 'active':'' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Contenu général
+      </a>
+      <a href="/admin/logs"     class="sidebar-link <%= activePage==='logs' ? 'active':'' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+        Journal activité
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/" target="_blank" class="sidebar-link sidebar-link-sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Voir le site
+      </a>
+      <a href="/admin/logout" class="sidebar-link sidebar-link-sm sidebar-logout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Déconnexion
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="admin-topbar-right">
+        <span class="admin-user">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <%= admin %>
+        </span>
+      </div>
+    </header>
+
+    <div class="admin-content">

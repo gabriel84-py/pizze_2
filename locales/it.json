@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "home": "Home",
+    "menu": "Il Menù",
+    "story": "La Nostra Storia",
+    "reviews": "Recensioni",
+    "contact": "Contatti",
+    "legal": "Note legali",
+    "cookies": "Cookie policy"
+  },
+  "hero": {
+    "cta_call": "Chiama ora",
+    "cta_menu": "Vedi il menù",
+    "open_now": "Aperto adesso",
+    "closed_opens": "Chiuso — apre alle {{time}}",
+    "closed_today": "Chiuso oggi"
+  },
+  "about": {
+    "title": "La Nostra Storia"
+  },
+  "menu": {
+    "title": "Il Menù",
+    "subtitle": "Pizze tradizionali napoletane al forno a legna",
+    "featured": "In evidenza",
+    "veggie": "Vegetariano",
+    "spicy": "Piccante",
+    "truffle": "Tartufo",
+    "supplements_note": "Tutti gli extra possono essere aggiunti a qualsiasi pizza."
+  },
+  "reviews": {
+    "title": "Cosa dicono",
+    "subtitle": "Valutazione Google",
+    "source": "Recensione Google"
+  },
+  "hours": {
+    "title": "Orari",
+    "closed": "Chiuso",
+    "today": "Oggi"
+  },
+  "contact": {
+    "title": "Dove siamo",
+    "phone": "Telefono",
+    "address": "Indirizzo",
+    "take_away": "Da asporto",
+    "on_site": "Al tavolo",
+    "parking": "Parcheggio facile"
+  },
+  "footer": {
+    "follow": "Seguici",
+    "rights": "Tutti i diritti riservati",
+    "legal": "Note legali"
+  },
+  "lang": {
+    "fr": "Français",
+    "en": "English",
+    "it": "Italiano"
+  },
+  "float_btn": "Chiama",
+  "open_badge": "Aperto"
+}

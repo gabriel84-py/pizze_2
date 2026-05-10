@@ -1,0 +1,124 @@
+<%- include('partials/head', { pageTitle: t('nav.story') }) %>
+<%- include('partials/nav') %>
+
+<main>
+
+  <!-- Page hero -->
+  <section class="page-hero">
+    <div class="container" style="position:relative;z-index:2">
+      <span class="section-label on-dark">Depuis 2021</span>
+      <h1><%= t('about.title') || 'Notre histoire' %></h1>
+    </div>
+    <div class="page-hero-deco" aria-hidden="true">Storia</div>
+  </section>
+
+  <!-- Histoire -->
+  <section class="story-section">
+    <div class="container-tight">
+      <div class="story-layout">
+
+        <!-- Texte -->
+        <div class="story-text reveal-left">
+          <span class="section-label">Du food truck à la pizzeria</span>
+          <h2><%= s.about_title || 'Notre histoire' %></h2>
+
+          <% (s.about_text || '').split('\n').filter(l => l.trim()).forEach(para => { %>
+          <p><%= para %></p>
+          <% }) %>
+
+          <!-- Timeline -->
+          <div class="story-timeline mt-lg">
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-dot"></div>
+                <div class="tl-line"></div>
+              </div>
+              <div class="tl-content">
+                <div class="tl-year">2021</div>
+                <p class="tl-text">Naissance de Parigina en food truck — les premières pizzas napolitaines sillonnent le Vaucluse.</p>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-dot"></div>
+                <div class="tl-line"></div>
+              </div>
+              <div class="tl-content">
+                <div class="tl-year">2024</div>
+                <p class="tl-text">Ouverture de la pizzeria à Villeneuve-lès-Avignon. Le four à bois prend sa place définitive.</p>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-dot"></div>
+              </div>
+              <div class="tl-content">
+                <div class="tl-year">Aujourd'hui</div>
+                <p class="tl-text">4.9/5 sur Google · <%= s.google_count %> avis · Les meilleures pizzas napolitaines du Grand Avignon.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visuel -->
+        <div class="story-visual reveal-right">
+          <div class="story-img-stack">
+            <% if (s.about_photo_1) { %>
+            <img class="story-img-1" src="/uploads/<%= s.about_photo_1 %>" alt="Parigina — Notre histoire" loading="lazy" width="500" height="667">
+            <% } else { %>
+            <img class="story-img-1" src="/uploads/devanture-nuit.jpg" alt="Parigina — Devanture" loading="lazy" width="500" height="667">
+            <% } %>
+            <% if (s.about_photo_2) { %>
+            <img class="story-img-2" src="/uploads/<%= s.about_photo_2 %>" alt="Parigina — Le four" loading="lazy" width="300" height="300">
+            <% } else { %>
+            <img class="story-img-2" src="/uploads/four-bois.webp" alt="Four à bois Parigina" loading="lazy" width="300" height="300">
+            <% } %>
+            <div class="story-badge">
+              <span class="story-badge-num"><%= s.google_rating %></span>
+              <span class="story-badge-lbl">Sur<br>Google</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Valeurs -->
+  <div class="values-strip">
+    <div class="container">
+      <div class="text-center reveal" style="margin-bottom:3rem">
+        <span class="section-label">Nos engagements</span>
+        <h2 class="section-title">Ce qui nous <em>différencie</em></h2>
+      </div>
+      <div class="values-grid">
+        <div class="value-item reveal">
+          <div class="value-num">01</div>
+          <h4>Authenticité napolitaine</h4>
+          <p>Nos recettes s'inspirent directement de Naples. La Parigina — spécialité napolitaine emblématique — est à l'origine de notre nom.</p>
+        </div>
+        <div class="value-item reveal" style="transition-delay:80ms">
+          <div class="value-num">02</div>
+          <h4>Le feu de bois</h4>
+          <p>Cuisson à plus de 400°C. Une pâte légère, alvéolée, avec un fumé unique — impossible à reproduire autrement.</p>
+        </div>
+        <div class="value-item reveal" style="transition-delay:160ms">
+          <div class="value-num">03</div>
+          <h4>Ingrédients d'exception</h4>
+          <p>Mozzarella di Bufala, Parmigiano Reggiano, Jambon de Parme 24 mois… Des produits à la hauteur de nos ambitions.</p>
+        </div>
+        <div class="value-item reveal" style="transition-delay:240ms">
+          <div class="value-num">04</div>
+          <h4>L'accueil avant tout</h4>
+          <p>La sympathie du pizzaiolo est aussi bonne que ses pizzas. Chez Parigina, vous êtes accueillis comme à la maison.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js?v=2"></script>
+</body>
+</html>

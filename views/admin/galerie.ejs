@@ -1,0 +1,121 @@
+<%- include('../partials/admin-layout-top', { pageTitle: 'Galerie', activePage: 'galerie', admin }) %>
+
+<div class="page-header">
+  <h1>Galerie photos</h1>
+  <label class="btn btn-primary" for="gallery-file-input" style="cursor:pointer">
+    + Ajouter des photos
+  </label>
+</div>
+
+<!-- Zone d'upload drag & drop -->
+<div class="gallery-upload-zone" id="gallery-upload-zone">
+  <form method="POST" action="/admin/galerie/upload" enctype="multipart/form-data" id="gallery-upload-form">
+    <input type="file" name="photos" id="gallery-file-input" accept="image/*" multiple class="file-input-hidden">
+    <div class="gallery-dz-content">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <p>Glissez vos photos ici ou <label for="gallery-file-input" style="color:var(--sage);cursor:pointer;text-decoration:underline">cliquez pour choisir</label></p>
+      <span>JPG, PNG, WebP — max 15 Mo — redimensionnées en WebP automatiquement</span>
+    </div>
+    <div id="gallery-dz-files" class="gallery-dz-files"></div>
+    <div id="gallery-dz-submit" style="display:none;margin-top:1rem">
+      <button type="submit" class="btn btn-primary">Uploader (<span id="gallery-file-count">0</span> photo(s))</button>
+      <button type="button" class="btn btn-outline" onclick="resetUpload()">Annuler</button>
+    </div>
+  </form>
+</div>
+
+<!-- Grille photos existantes -->
+<div class="gallery-grid" id="gallery-grid">
+  <% if (photos.length === 0) { %>
+  <div class="empty-state-card" style="grid-column:1/-1">
+    <p>Aucune photo dans la galerie. Ajoutez vos premières photos ci-dessus.</p>
+  </div>
+  <% } %>
+  <% photos.forEach((photo, i) => { %>
+  <div class="gallery-item" data-id="<%= photo.id %>" data-order="<%= photo.sort_order %>">
+    <div class="gallery-item-img">
+      <img src="/uploads/<%= photo.filename %>" alt="<%= photo.caption || 'Photo galerie' %>" loading="lazy">
+      <div class="gallery-item-overlay">
+        <button class="gallery-btn" onclick="editCaption(<%= photo.id %>, `<%= (photo.caption||'').replace(/`/g,'\\`') %>`)" title="Modifier la légende">✏️</button>
+        <form method="POST" action="/admin/galerie/<%= photo.id %>/delete" style="display:inline" onsubmit="return confirm('Supprimer cette photo ?')">
+          <button type="submit" class="gallery-btn danger" title="Supprimer">🗑️</button>
+        </form>
+      </div>
+    </div>
+    <div class="gallery-item-footer">
+      <span class="gallery-caption"><%= photo.caption || '—' %></span>
+      <div class="gallery-order-controls">
+        <input type="number" class="order-input" value="<%= photo.sort_order %>" min="0"
+          onchange="updateOrder(<%= photo.id %>, this.value)" title="Ordre d'affichage">
+      </div>
+    </div>
+  </div>
+  <% }) %>
+</div>
+
+<!-- Modal légende -->
+<div class="modal-overlay" id="modal-caption" aria-modal="true" role="dialog" aria-label="Modifier la légende">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3>Modifier la légende</h3>
+      <button class="modal-close" onclick="closeModal('modal-caption')" aria-label="Fermer">×</button>
+    </div>
+    <div class="admin-form">
+      <div class="form-group">
+        <label>Légende (alt text, SEO)</label>
+        <input type="text" id="caption-input" placeholder="Ex: Four à bois Parigina">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modal-caption')">Annuler</button>
+        <button class="btn btn-primary" onclick="saveCaption()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentCaptionId = null;
+function editCaption(id, current) {
+  currentCaptionId = id;
+  document.getElementById('caption-input').value = current;
+  openModal('modal-caption');
+}
+function saveCaption() {
+  const val = document.getElementById('caption-input').value;
+  fetch('/admin/galerie/' + currentCaptionId + '/caption', {
+    method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ caption: val })
+  }).then(() => { closeModal('modal-caption'); location.reload(); });
+}
+function updateOrder(id, order) {
+  fetch('/admin/galerie/' + id + '/order', {
+    method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ order })
+  });
+}
+
+// Upload drag & drop
+const zone = document.getElementById('gallery-upload-zone');
+const input = document.getElementById('gallery-file-input');
+const filesDiv = document.getElementById('gallery-dz-files');
+const submitDiv = document.getElementById('gallery-dz-submit');
+const countSpan = document.getElementById('gallery-file-count');
+
+['dragenter','dragover'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('drag-over'); }));
+['dragleave','drop'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.remove('drag-over'); }));
+zone.addEventListener('drop', ev => { input.files = ev.dataTransfer.files; updateFileList(); });
+input.addEventListener('change', updateFileList);
+
+function updateFileList() {
+  const files = Array.from(input.files);
+  if (!files.length) return;
+  filesDiv.innerHTML = files.map(f => `<div class="dz-file-chip">📷 ${f.name} (${(f.size/1024/1024).toFixed(1)} Mo)</div>`).join('');
+  countSpan.textContent = files.length;
+  submitDiv.style.display = 'flex';
+}
+function resetUpload() {
+  input.value = '';
+  filesDiv.innerHTML = '';
+  submitDiv.style.display = 'none';
+}
+</script>
+
+<%- include('../partials/admin-layout-bottom') %>

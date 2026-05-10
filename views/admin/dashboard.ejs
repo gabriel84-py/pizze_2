@@ -1,0 +1,92 @@
+<%- include('../partials/admin-layout-top', { pageTitle: 'Dashboard', activePage: 'dashboard', admin }) %>
+
+<div class="page-header">
+  <h1>Bonjour, <%= admin %> 👋</h1>
+  <p class="page-sub">Bienvenue dans l'administration de <strong>Parigina</strong></p>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon stat-icon-green">🍕</div>
+    <div class="stat-info">
+      <span class="stat-num"><%= stats.pizzas %></span>
+      <span class="stat-label">Pizzas au menu</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon-blue">📸</div>
+    <div class="stat-info">
+      <span class="stat-num"><%= stats.photos %></span>
+      <span class="stat-label">Photos en galerie</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon-orange">⭐</div>
+    <div class="stat-info">
+      <span class="stat-num"><%= stats.avis %></span>
+      <span class="stat-label">Avis visibles</span>
+    </div>
+  </div>
+  <div class="stat-card stat-card-rating">
+    <div class="stat-icon stat-icon-red">🌟</div>
+    <div class="stat-info">
+      <span class="stat-num"><%= s.google_rating %>/5</span>
+      <span class="stat-label">Note Google</span>
+    </div>
+  </div>
+</div>
+
+<!-- Raccourcis -->
+<div class="admin-shortcuts">
+  <h2>Accès rapide</h2>
+  <div class="shortcuts-grid">
+    <a href="/admin/menu" class="shortcut-card">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v8M8 12h8"/></svg>
+      <span>Ajouter une pizza</span>
+    </a>
+    <a href="/admin/horaires" class="shortcut-card">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>Modifier les horaires</span>
+    </a>
+    <a href="/admin/galerie" class="shortcut-card">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <span>Ajouter des photos</span>
+    </a>
+    <a href="/admin/contenu" class="shortcut-card">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      <span>Modifier le contenu</span>
+    </a>
+    <a href="/admin/avis" class="shortcut-card">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <span>Gérer les avis</span>
+    </a>
+    <a href="/" target="_blank" class="shortcut-card shortcut-card-outline">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>Voir le site</span>
+    </a>
+  </div>
+</div>
+
+<!-- Journal activité -->
+<div class="admin-card mt-4">
+  <div class="admin-card-header">
+    <h2>Dernières activités</h2>
+    <a href="/admin/logs" class="btn-link">Voir tout →</a>
+  </div>
+  <div class="logs-list">
+    <% logs.slice(0,10).forEach(log => { %>
+    <div class="log-item">
+      <div class="log-icon"><%= log.action.startsWith('login') ? '🔑' : log.action.startsWith('menu') ? '🍕' : log.action.startsWith('gallery') ? '📸' : log.action.startsWith('avis') ? '⭐' : '✏️' %></div>
+      <div class="log-info">
+        <strong><%= log.username || 'admin' %></strong>
+        <span><%= log.details || log.action %></span>
+      </div>
+      <time class="log-time"><%= new Date(log.created_at).toLocaleString('fr-FR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) %></time>
+    </div>
+    <% }) %>
+    <% if (!logs.length) { %><p class="empty-state">Aucune activité pour l'instant.</p><% } %>
+  </div>
+</div>
+
+<%- include('../partials/admin-layout-bottom') %>

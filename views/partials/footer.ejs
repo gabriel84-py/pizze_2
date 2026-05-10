@@ -1,0 +1,89 @@
+<%
+const phoneRaw = s.phone         || '+33768280628';
+const phoneDsp = s.phone_display || '07 68 28 06 28';
+const fbUrl    = s.facebook_url  || '';
+const igUrl    = s.instagram_url || '';
+%>
+
+<footer class="site-footer">
+  <div class="container footer-top">
+
+    <!-- Colonne marque -->
+    <div class="footer-brand-col">
+      <%# Vrai logo Parigina — mix-blend-mode:screen rend le fond noir transparent sur fond sombre %>
+      <img
+        src="/uploads/logo-parigina.jpg"
+        alt="Parigina — Pizza Napoletana"
+        width="140"
+        height="140"
+        style="mix-blend-mode:screen;opacity:.92;display:block;margin-bottom:.5rem"
+        loading="lazy"
+      >
+      <p>Pizza napolitaine au feu de bois, façonnée à la main chaque jour.<br><%= s.address_city %>.</p>
+      <div class="footer-socials">
+        <% if (fbUrl) { %>
+        <a href="<%= fbUrl %>" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <% } %>
+        <% if (igUrl) { %>
+        <a href="<%= igUrl %>" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Horaires -->
+    <div>
+      <p class="footer-col-title"><%= t('hours.title') %></p>
+      <ul class="footer-hours-list">
+        <% horaires.forEach(h => { %>
+        <li class="<%= h.is_closed ? 'closed' : '' %>">
+          <span><%= h['day_name_' + lang] || h.day_name_fr %></span>
+          <strong><%= h.is_closed ? t('hours.closed') : h.opens + ' – ' + h.closes %></strong>
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+
+    <!-- Navigation -->
+    <div>
+      <p class="footer-col-title">Navigation</p>
+      <nav class="footer-nav-list" aria-label="Liens du pied de page">
+        <a href="/?lang=<%= lang %>"><%= t('nav.home') %></a>
+        <a href="/carte?lang=<%= lang %>"><%= t('nav.menu') %></a>
+        <a href="/notre-histoire?lang=<%= lang %>"><%= t('nav.story') %></a>
+        <a href="/avis?lang=<%= lang %>"><%= t('nav.reviews') %></a>
+      </nav>
+    </div>
+
+    <!-- Contact -->
+    <div>
+      <p class="footer-col-title"><%= t('contact.title') %></p>
+      <address class="footer-contact">
+        <a href="tel:<%= phoneRaw %>" class="footer-phone"><%= phoneDsp %></a>
+        <% if (s.email) { %><a href="mailto:<%= s.email %>"><%= s.email %></a><% } %>
+        <span><%= s.address_street %><br><%= s.address_zip %> <%= s.address_city %></span>
+        <% if (s.google_maps_url) { %>
+        <a href="<%= s.google_maps_url %>" target="_blank" rel="noopener">Voir sur Google Maps →</a>
+        <% } %>
+      </address>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom container">
+    <p>© <%= new Date().getFullYear() %> <%= s.site_name %> — <%= t('footer.rights') %></p>
+    <div class="footer-legal-links">
+      <a href="/mentions-legales?lang=<%= lang %>"><%= t('footer.legal') %></a>
+      <a href="/cookies?lang=<%= lang %>"><%= t('nav.cookies') %></a>
+    </div>
+  </div>
+</footer>
+
+<!-- Bouton flottant appel -->
+<a href="tel:<%= phoneRaw %>" class="float-call" aria-label="<%= t('float_btn') %>">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+  <span><%= t('float_btn') %></span>
+</a>

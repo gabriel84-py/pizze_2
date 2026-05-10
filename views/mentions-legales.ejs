@@ -1,0 +1,40 @@
+<%- include('partials/head', { pageTitle: 'Mentions légales' }) %>
+<%- include('partials/nav') %>
+<main>
+  <section class="section legal-section">
+    <div class="container container-tight">
+      <h1>Mentions légales</h1>
+
+      <h2>Éditeur du site</h2>
+      <p>
+        <strong>Raison sociale :</strong> <%= s.site_name %><br>
+        <strong>Forme juridique :</strong> <%= s.legal_form %><br>
+        <strong>Capital social :</strong> <%= s.capital %><br>
+        <strong>SIRET :</strong> <%= s.siret %><br>
+        <strong>SIREN :</strong> <%= s.siren %><br>
+        <strong>RCS :</strong> <%= s.rcs %><br>
+        <strong>Siège social :</strong> <%= s.address_street %>, <%= s.address_zip %> <%= s.address_city %><br>
+        <strong>Représentant légal :</strong> <%= s.dirigeant %><br>
+        <strong>Téléphone :</strong> <a href="tel:<%= s.phone %>"><%= s.phone_display %></a><br>
+        <% if(s.email) { %><strong>Email :</strong> <a href="mailto:<%= s.email %>"><%= s.email %></a><br><% } %>
+      </p>
+
+      <h2>Hébergeur</h2>
+      <p><%= s.hebergeur || 'Information en cours de mise à jour.' %></p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>L'ensemble du contenu de ce site (textes, images, logos) est la propriété exclusive de <%= s.site_name %> ou de ses ayants droit. Toute reproduction, même partielle, est interdite sans autorisation préalable écrite.</p>
+
+      <h2>Données personnelles</h2>
+      <p>Ce site ne collecte aucune donnée personnelle via formulaire. La navigation peut générer des cookies techniques nécessaires au fonctionnement du site. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données.</p>
+
+      <h2>Responsabilité</h2>
+      <p><%= s.site_name %> ne saurait être tenu responsable des dommages directs ou indirects résultant de l'utilisation de ce site. Les informations présentes sur ce site sont fournies à titre indicatif et peuvent être modifiées à tout moment.</p>
+
+      <p class="legal-back"><a href="/?lang=<%= lang %>">← Retour à l'accueil</a></p>
+    </div>
+  </section>
+</main>
+<%- include('partials/footer') %>
+<script src="/js/main.js"></script>
+</body></html>
